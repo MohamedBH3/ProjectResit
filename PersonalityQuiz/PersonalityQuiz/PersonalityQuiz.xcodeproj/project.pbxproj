@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5764BB892F3C33E000750835 /* Exceptions for "PersonalityQuiz" folder in "PersonalityQuiz" target */ = {
+		5764BB892F3C33E000750835 /* Exceptions for "Controllers" folder in "PersonalityQuiz" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,22 +40,22 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5764BB632F3C33DD00750835 /* PersonalityQuiz */ = {
+		5764BB632F3C33DD00750835 /* Controllers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				5764BB892F3C33E000750835 /* Exceptions for "PersonalityQuiz" folder in "PersonalityQuiz" target */,
+				5764BB892F3C33E000750835 /* Exceptions for "Controllers" folder in "PersonalityQuiz" target */,
 			);
-			path = PersonalityQuiz;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		5764BB7A2F3C33E000750835 /* PersonalityQuizTests */ = {
+		5764BB7A2F3C33E000750835 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PersonalityQuizTests;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		5764BB842F3C33E000750835 /* PersonalityQuizUITests */ = {
+		5764BB842F3C33E000750835 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PersonalityQuizUITests;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -88,9 +88,10 @@
 		5764BB582F3C33DD00750835 = {
 			isa = PBXGroup;
 			children = (
-				5764BB632F3C33DD00750835 /* PersonalityQuiz */,
-				5764BB7A2F3C33E000750835 /* PersonalityQuizTests */,
-				5764BB842F3C33E000750835 /* PersonalityQuizUITests */,
+				579C35782F3C8B910039E047 /* Resources */,
+				5764BB632F3C33DD00750835 /* Controllers */,
+				5764BB7A2F3C33E000750835 /* Models */,
+				5764BB842F3C33E000750835 /* Views */,
 				5764BB622F3C33DD00750835 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +104,13 @@
 				5764BB812F3C33E000750835 /* PersonalityQuizUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		579C35782F3C8B910039E047 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,7 +129,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5764BB632F3C33DD00750835 /* PersonalityQuiz */,
+				5764BB632F3C33DD00750835 /* Controllers */,
 			);
 			name = PersonalityQuiz;
 			packageProductDependencies = (
@@ -144,7 +152,7 @@
 				5764BB792F3C33E000750835 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5764BB7A2F3C33E000750835 /* PersonalityQuizTests */,
+				5764BB7A2F3C33E000750835 /* Models */,
 			);
 			name = PersonalityQuizTests;
 			packageProductDependencies = (
@@ -167,7 +175,7 @@
 				5764BB832F3C33E000750835 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5764BB842F3C33E000750835 /* PersonalityQuizUITests */,
+				5764BB842F3C33E000750835 /* Views */,
 			);
 			name = PersonalityQuizUITests;
 			packageProductDependencies = (
@@ -290,7 +298,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PersonalityQuiz/Info.plist;
+				INFOPLIST_FILE = Controllers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -318,7 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PersonalityQuiz/Info.plist;
+				INFOPLIST_FILE = Controllers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
