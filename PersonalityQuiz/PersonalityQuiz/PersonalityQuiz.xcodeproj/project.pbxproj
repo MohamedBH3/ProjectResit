@@ -37,6 +37,20 @@
 			);
 			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
 		};
+		579C358A2F3DDB8F0039E047 /* Exceptions for "Models" folder in "PersonalityQuiz" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Quiz.swift,
+			);
+			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
+		};
+		579C358E2F3DDBAD0039E047 /* Exceptions for "Views" folder in "PersonalityQuiz" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				QuizCardCell.swift,
+			);
+			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,11 +64,17 @@
 		};
 		5764BB7A2F3C33E000750835 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				579C358A2F3DDB8F0039E047 /* Exceptions for "Models" folder in "PersonalityQuiz" target */,
+			);
 			path = Models;
 			sourceTree = "<group>";
 		};
 		5764BB842F3C33E000750835 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				579C358E2F3DDBAD0039E047 /* Exceptions for "Views" folder in "PersonalityQuiz" target */,
+			);
 			path = Views;
 			sourceTree = "<group>";
 		};

@@ -11,7 +11,7 @@
         <!--QuizSelectionViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="QuizSelectionViewController" customClass="ViewController" customModule="PersonalityQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="QuizSelectionViewController" customClass="QuizSelectionViewController" customModule="PersonalityQuiz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,8 +40,12 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="4ah-2R-zd3"/>
                                         </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Start Quiz"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Start Quiz"/>
+                                        <connections>
+                                            <segue destination="DJf-Ag-QNb" kind="show" id="6yk-jc-3fL"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syS-20-YYJ" userLabel="historyButton">
                                         <rect key="frame" x="0.0" y="52" width="353" height="40"/>
@@ -49,7 +53,10 @@
                                             <constraint firstAttribute="height" constant="40" id="x4G-44-IS1"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="History"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="History"/>
+                                        <connections>
+                                            <segue destination="Tnl-Om-KW7" kind="show" id="K9A-SG-tp6"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -71,6 +78,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Mw3-Gt-3bw"/>
+                    <connections>
+                        <outlet property="historyButton" destination="syS-20-YYJ" id="fAT-vP-f1t"/>
+                        <outlet property="quizTableView" destination="gVp-9j-XmR" id="Lon-6P-r4J"/>
+                        <outlet property="startQuizButton" destination="zkK-DC-iBP" id="jDO-lc-smV"/>
+                        <outlet property="subtitleLabel" destination="pWa-t0-2am" id="FWo-J9-MNQ"/>
+                        <outlet property="titleLabel" destination="BHk-JA-N2A" id="4MC-ii-ZmA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -79,13 +93,14 @@
         <!--QuestionViewController-->
         <scene sceneID="k7r-t3-lAQ">
             <objects>
-                <viewController id="DJf-Ag-QNb" userLabel="QuestionViewController" sceneMemberID="viewController">
+                <viewController id="DJf-Ag-QNb" userLabel="QuestionViewController" customClass="QuestionViewController" customModule="PersonalityQuiz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="had-lg-Eum">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="B8k-UW-o69"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="UaA-Ym-QGa"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cg0-nn-gxo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -109,13 +124,14 @@
         <!--HistoryViewController-->
         <scene sceneID="ubK-8q-kd1">
             <objects>
-                <viewController id="Tnl-Om-KW7" userLabel="HistoryViewController" sceneMemberID="viewController">
+                <viewController id="Tnl-Om-KW7" userLabel="HistoryViewController" customClass="HistoryViewController" customModule="PersonalityQuiz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fiM-kK-9Xq">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="0i0-eP-FyJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Mtg-sv-wms"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdI-uM-jcx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
