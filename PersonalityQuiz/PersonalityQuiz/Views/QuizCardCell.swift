@@ -77,7 +77,7 @@ final class QuizCardCell: UITableViewCell {
         ])
     }
 
-    func configure(with quiz: Quiz) {
+    func configure(with quiz: QuizCategory) {
         titleLabel.text = quiz.title
         subtitleLabel.text = quiz.subtitle
         iconImageView.image = UIImage(named: quiz.iconName)

@@ -9,7 +9,7 @@ final class QuizSelectionViewController: UIViewController {
     @IBOutlet weak var startQuizButton: UIButton!
     @IBOutlet weak var historyButton: UIButton!
     
-    private let quizzes: [Quiz] = [
+    private let quizzes: [QuizCategory] = [
         Quiz(title: "Food Quiz",
              subtitle: "Answer fun questions about\nyour food preferences.",
              iconName: "foodIcon"),
