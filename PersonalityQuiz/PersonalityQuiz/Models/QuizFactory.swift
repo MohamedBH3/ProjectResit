@@ -1,33 +1,24 @@
 import Foundation
 
-// Central place to build quiz questions based on category selection.
-// This keeps QuestionViewController focused only on rendering and interaction.
+// Creates quiz content based on the selected category.
+// Keeps view controllers free of hardcoded quiz data.
 enum QuizFactory {
 
-    // Returns a full set of questions based on the selected category title
     static func makeQuestions(for categoryTitle: String) -> [Question] {
         switch categoryTitle {
-
         case "Food Quiz":
             return foodQuestions()
-
         case "Animal Quiz":
             return animalQuestions()
-
         case "Music Quiz":
             return musicQuestions()
-
         default:
-            // Fallback to avoid crashing if a new category is added without implementation
             return foodQuestions()
         }
     }
 
-    // MARK: - Food Quiz Questions
-
     private static func foodQuestions() -> [Question] {
         [
-            // Q1 - Single
             Question(
                 text: "Which food do you prefer?",
                 type: .single,
@@ -38,8 +29,6 @@ enum QuizFactory {
                     Answer(text: "Salad", imageName: "salad", resultID: "D")
                 ]
             ),
-
-            // Q2 - Multiple
             Question(
                 text: "Which flavors do you enjoy?",
                 type: .multiple,
@@ -50,8 +39,6 @@ enum QuizFactory {
                     Answer(text: "Sour", imageName: "sour", resultID: "D")
                 ]
             ),
-
-            // Q3 - Ranged (uses first and last answer as slider endpoints)
             Question(
                 text: "How much do you enjoy trying new foods?",
                 type: .ranged,
@@ -60,16 +47,12 @@ enum QuizFactory {
                     Answer(text: "Very much", imageName: "", resultID: "D")
                 ]
             ),
-
-            // The remaining questions are placeholders until final content/images are added
             Question(text: "Pick a comfort meal.", type: .single, answers: sampleFoodAnswers()),
             Question(text: "Choose a drink.", type: .single, answers: sampleFoodAnswers()),
             Question(text: "Pick a dessert.", type: .single, answers: sampleFoodAnswers()),
             Question(text: "Select cuisines you like.", type: .multiple, answers: sampleFoodAnswers()),
             Question(text: "Pick a snack.", type: .single, answers: sampleFoodAnswers()),
             Question(text: "Select toppings you like.", type: .multiple, answers: sampleFoodAnswers()),
-
-            // Ranged example
             Question(
                 text: "How spicy do you like your food?",
                 type: .ranged,
@@ -81,21 +64,15 @@ enum QuizFactory {
         ]
     }
 
-    // MARK: - Animal Quiz Questions
-
     private static func animalQuestions() -> [Question] {
-        // Placeholder questions: replace with real 10 questions + image assets later
-        Array(repeating: Question(text: "Animal question", type: .single, answers: sampleAnimalAnswers()), count: 10)
+        Array(repeating: Question(text: "Animal question", type: .single, answers: sampleAnimalAnswers()),
+              count: 10)
     }
-
-    // MARK: - Music Quiz Questions
 
     private static func musicQuestions() -> [Question] {
-        // Placeholder questions: replace with real 10 questions + image assets later
-        Array(repeating: Question(text: "Music question", type: .single, answers: sampleMusicAnswers()), count: 10)
+        Array(repeating: Question(text: "Music question", type: .single, answers: sampleMusicAnswers()),
+              count: 10)
     }
-
-    // MARK: - Sample Answer Sets (Placeholder)
 
     private static func sampleFoodAnswers() -> [Answer] {
         [

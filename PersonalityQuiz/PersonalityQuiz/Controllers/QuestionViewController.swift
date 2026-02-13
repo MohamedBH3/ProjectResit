@@ -17,22 +17,20 @@ final class QuestionViewController: UIViewController {
     @IBOutlet private weak var rightRangeLabel: UILabel!
 
     @IBOutlet private weak var nextButton: UIButton!
+    
 
-        // MARK: - Passed In From Previous Screen
+        // MARK: - Inputs
 
-        // Set in QuizSelectionViewController.prepare(for:sender:)
+        // Provided by QuizSelectionViewController during segue.
         var quizCategory: QuizCategory!
 
-        // MARK: - Quiz State
+        // MARK: - State
 
         private var quiz: Quiz!
         private var currentQuestionIndex = 0
 
-        // Used to track what the user selected
         private var selectedSingleIndex: Int?
         private var selectedMultipleIndexes = Set<Int>()
-
-        // MARK: - Timer State
 
         private var secondsRemaining: Int = 15
         private var timer: Timer?
@@ -42,33 +40,15 @@ final class QuestionViewController: UIViewController {
         override func viewDidLoad() {
             super.viewDidLoad()
 
-            // Apply screen styling
             configureUI()
-
-            // Setup answers list
             configureTableView()
-
-            // Build quiz content based on selected category
             buildQuizFromSelection()
-
-            // Render the first question
             showCurrentQuestion()
-
-            // Start countdown timer for the question
             startTimer()
         }
 
-        // MARK: - Quiz Building
-
-        // Converts the selected category into a full Quiz model
-        private func buildQuizFromSelection() {
-            let id = quizCategory.title.lowercased().replacingOccurrences(of: " ", with: "_")
-
-            quiz = Quiz(
-                id: id,
-                title: quizCategory.title,
-                questions: QuizFactory.makeQuestions(for: quizCategory.title)
-            )
+        deinit {
+            timer?.invalidate()
         }
 
         // MARK: - UI Setup
@@ -76,29 +56,29 @@ final class QuestionViewController: UIViewController {
         private func configureUI() {
             view.backgroundColor = .systemBackground
 
-            // Question number styling
             questionNumberLabel.textColor = UIColor(hex: "282D37")
-            questionNumberLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+            questionNumberLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .semibold)
 
-            // Question text styling
-            questionLabel.textColor = UIColor(hex: "282D37")
-            questionLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-
-            // Instruction styling
-            instructionLabel.textColor = UIColor(hex: "6A717B")
-            instructionLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-
-            // Timer styling
             timerLabel.textColor = UIColor(hex: "4D8AE0")
             timerLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-            timerLabel.text = "00:15"
 
-            // Progress bar styling
-            progressView.progress = 0.1
             progressView.trackTintColor = UIColor(hex: "ECECF1")
             progressView.progressTintColor = UIColor(hex: "4D8AE0")
 
-            // Next button styling
+            // Allow the question to grow vertically to avoid overlapping other labels.
+            questionLabel.textColor = UIColor(hex: "282D37")
+            questionLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
+            questionLabel.numberOfLines = 0
+            questionLabel.lineBreakMode = .byWordWrapping
+
+            instructionLabel.textColor = UIColor(hex: "6A717B")
+            instructionLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+            instructionLabel.numberOfLines = 0
+
+            // Ensure Auto Layout prioritizes showing the full question text.
+            questionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+            instructionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
             nextButton.backgroundColor = UIColor(hex: "4D8AE0")
             nextButton.layer.cornerRadius = 14
             nextButton.setTitleColor(UIColor(hex: "FEFEFE"), for: .normal)
@@ -112,110 +92,152 @@ final class QuestionViewController: UIViewController {
 
             answersTableView.dataSource = self
             answersTableView.delegate = self
+
+            answersTableView.contentInset = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+        }
+
+        // MARK: - Quiz Construction
+
+        private func buildQuizFromSelection() {
+            let id = quizCategory.title.lowercased().replacingOccurrences(of: " ", with: "_")
+            quiz = Quiz(id: id,
+                        title: quizCategory.title,
+                        questions: QuizFactory.makeQuestions(for: quizCategory.title))
         }
 
         // MARK: - Timer
 
-        // Starts/restarts the countdown timer for each question
         private func startTimer() {
             timer?.invalidate()
 
             secondsRemaining = 15
-            timerLabel.text = String(format: "00:%02d", secondsRemaining)
+            updateTimerLabel()
 
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 guard let self else { return }
 
                 self.secondsRemaining -= 1
-                self.timerLabel.text = String(format: "00:%02d", max(self.secondsRemaining, 0))
+                self.updateTimerLabel()
 
                 if self.secondsRemaining <= 0 {
                     self.timer?.invalidate()
-                    self.handleTimeExpired()
+                    self.goToNextQuestion()
                 }
             }
         }
 
-        // Called when the timer reaches zero
-        private func handleTimeExpired() {
-            goToNextQuestion()
+        private func updateTimerLabel() {
+            timerLabel.text = String(format: "00:%02d", max(secondsRemaining, 0))
         }
 
-        // MARK: - Question Rendering
+        // MARK: - Rendering
 
         private func showCurrentQuestion() {
             let question = quiz.questions[currentQuestionIndex]
 
-            // Update header text
             questionNumberLabel.text = "Question \(currentQuestionIndex + 1) of \(quiz.questions.count)"
             questionLabel.text = question.text
 
-            // Update progress bar
-            progressView.progress = Float(currentQuestionIndex + 1) / Float(quiz.questions.count)
+            let progress = Float(currentQuestionIndex + 1) / Float(max(quiz.questions.count, 1))
+            progressView.setProgress(progress, animated: true)
 
-            // Show correct UI based on question type
             switch question.type {
-
             case .single:
                 instructionLabel.text = "Select one answer"
-
+                setRangedUIHidden(true)
                 answersTableView.isHidden = false
-                rangeSlider.isHidden = true
-                leftRangeLabel.isHidden = true
-                rightRangeLabel.isHidden = true
 
             case .multiple:
                 instructionLabel.text = "Select all that apply"
-
+                setRangedUIHidden(true)
                 answersTableView.isHidden = false
-                rangeSlider.isHidden = true
-                leftRangeLabel.isHidden = true
-                rightRangeLabel.isHidden = true
 
             case .ranged:
                 instructionLabel.text = "Move the slider"
-
                 answersTableView.isHidden = true
-                rangeSlider.isHidden = false
-                leftRangeLabel.isHidden = false
-                rightRangeLabel.isHidden = false
+                setRangedUIHidden(false)
 
-                // (4) PUT THIS CODE RIGHT HERE:
-                // Configure the range UI using the first and last answer labels
+                // Configure the ranged UI endpoints from the first and last “answers”.
                 leftRangeLabel.text = question.answers.first?.text
                 rightRangeLabel.text = question.answers.last?.text
 
-                // Slider configured as a normalized 0...1 control
+                // Use a normalized slider range; you can map this to scoring later.
                 rangeSlider.minimumValue = 0
                 rangeSlider.maximumValue = 1
                 rangeSlider.value = 0.5
             }
 
-            // Reload answers for single/multiple questions
             answersTableView.reloadData()
+            startTimer()
         }
 
-        // MARK: - Navigation Logic
+        private func setRangedUIHidden(_ hidden: Bool) {
+            rangeSlider.isHidden = hidden
+            leftRangeLabel.isHidden = hidden
+            rightRangeLabel.isHidden = hidden
+        }
+
+        // MARK: - Navigation
 
         private func goToNextQuestion() {
-            // Reset selection state when moving forward
+            // Reset selection state each time a new question appears.
             selectedSingleIndex = nil
             selectedMultipleIndexes.removeAll()
 
-            // Advance if there are more questions, otherwise go to results
             if currentQuestionIndex < quiz.questions.count - 1 {
                 currentQuestionIndex += 1
                 showCurrentQuestion()
-                startTimer()
             } else {
-                performSegue(withIdentifier: "showResults", sender: nil)
+                // Results segue will be added when your results screen is implemented.
+                // performSegue(withIdentifier: "showResults", sender: nil)
             }
         }
 
         // MARK: - Actions
 
         @IBAction private func nextTapped(_ sender: UIButton) {
+            // Button feedback (animation + color shift) before advancing.
+            sender.applyPressFeedback()
+            sender.applyColorFeedback(darkerHex: "3F7DDA")
+
+            // Optional validation:
+            // Prevent skipping single/multiple questions without a selection.
+            let currentQuestion = quiz.questions[currentQuestionIndex]
+            if currentQuestion.type == .single, selectedSingleIndex == nil { return }
+            if currentQuestion.type == .multiple, selectedMultipleIndexes.isEmpty { return }
+
             goToNextQuestion()
+        }
+
+        // MARK: - Selection Helpers
+
+        private func isAnswerSelected(row: Int, questionType: QuestionType) -> Bool {
+            switch questionType {
+            case .single:
+                return selectedSingleIndex == row
+            case .multiple:
+                return selectedMultipleIndexes.contains(row)
+            case .ranged:
+                return false
+            }
+        }
+
+        private func updateSelection(row: Int, questionType: QuestionType) {
+            switch questionType {
+            case .single:
+                selectedSingleIndex = row
+                selectedMultipleIndexes.removeAll()
+
+            case .multiple:
+                if selectedMultipleIndexes.contains(row) {
+                    selectedMultipleIndexes.remove(row)
+                } else {
+                    selectedMultipleIndexes.insert(row)
+                }
+
+            case .ranged:
+                break
+            }
         }
     }
 
@@ -237,8 +259,14 @@ final class QuestionViewController: UIViewController {
                 return UITableViewCell()
             }
 
-            let answer = quiz.questions[currentQuestionIndex].answers[indexPath.row]
+            let question = quiz.questions[currentQuestionIndex]
+            let answer = question.answers[indexPath.row]
+
             cell.configure(text: answer.text, imageName: answer.imageName)
+
+            let selected = isAnswerSelected(row: indexPath.row, questionType: question.type)
+            cell.setSelectedAppearance(selected, animated: false)
+
             return cell
         }
 
@@ -247,17 +275,21 @@ final class QuestionViewController: UIViewController {
         }
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+            // Always provide press feedback on tap (single + multiple + any future type).
+            if let cell = tableView.cellForRow(at: indexPath) as? AnswerCell {
+                cell.animatePress()
+            }
+
+            // Then handle selection logic (your existing logic stays below).
             let question = quiz.questions[currentQuestionIndex]
 
             switch question.type {
-
             case .single:
-                // Save only one selected row
                 selectedSingleIndex = indexPath.row
                 selectedMultipleIndexes.removeAll()
 
             case .multiple:
-                // Toggle selection in the set
                 if selectedMultipleIndexes.contains(indexPath.row) {
                     selectedMultipleIndexes.remove(indexPath.row)
                 } else {
@@ -265,8 +297,12 @@ final class QuestionViewController: UIViewController {
                 }
 
             case .ranged:
-                // Ranged selection is read from the slider value
                 break
             }
+
+            tableView.reloadData()
         }
-    }
+            }
+            
+        
+    
