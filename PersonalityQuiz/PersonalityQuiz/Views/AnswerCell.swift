@@ -5,9 +5,10 @@ final class AnswerCell: UITableViewCell {
 
     static let reuseIdentifier = "AnswerCell"
 
-    @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var answerImageView: UIImageView!
-    @IBOutlet private weak var answerLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var answerImageView: UIImageView!
+    @IBOutlet weak var answerLabel: UILabel!
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

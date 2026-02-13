@@ -44,7 +44,8 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Start Quiz"/>
                                         <connections>
-                                            <segue destination="DJf-Ag-QNb" kind="show" id="6yk-jc-3fL"/>
+                                            <action selector="startQuizTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7bh-Ka-MfZ"/>
+                                            <segue destination="DJf-Ag-QNb" kind="show" identifier="showQuiz" id="2Jx-E9-5SR"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syS-20-YYJ" userLabel="historyButton">
@@ -55,7 +56,8 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="History"/>
                                         <connections>
-                                            <segue destination="Tnl-Om-KW7" kind="show" id="K9A-SG-tp6"/>
+                                            <action selector="historyTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="T1d-D3-C7V"/>
+                                            <segue destination="Tnl-Om-KW7" kind="show" identifier="showHistory" id="WgK-SZ-VcK"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -142,8 +144,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ZQO-Pm-MJq"/>
                                 </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Next"/>
+                                <connections>
+                                    <action selector="nextTapped:" destination="DJf-Ag-QNb" eventType="touchUpInside" id="83K-JM-QHn"/>
+                                </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="qtR-UF-alu" userLabel="rangeSlider">
                                 <rect key="frame" x="18" y="335.66666666666669" width="357" height="31"/>
@@ -157,6 +163,55 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="muk-wd-ZDd" userLabel="answersTableView">
                                 <rect key="frame" x="20" y="358" width="353" height="342"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AnswerCell" id="u6Q-6p-O6Y" customClass="AnswerCell" customModule="PersonalityQuiz">
+                                        <rect key="frame" x="0.0" y="50" width="353" height="20.333333969116211"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u6Q-6p-O6Y" id="hdp-zN-m0Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="20.333333969116211"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iX4-El-YGL" userLabel="containerView">
+                                                    <rect key="frame" x="20" y="10" width="313" height="0.33333333333333393"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SDz-5A-hrN" userLabel="answerImageView">
+                                                            <rect key="frame" x="16" y="-26" width="52" height="52.333333333333336"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="52" id="N3n-Hm-MeF"/>
+                                                                <constraint firstAttribute="width" constant="52" id="zqA-c8-yFV"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="SDz-5A-hrN" firstAttribute="leading" secondItem="iX4-El-YGL" secondAttribute="leading" constant="16" id="61C-zn-yy6"/>
+                                                        <constraint firstItem="SDz-5A-hrN" firstAttribute="centerY" secondItem="iX4-El-YGL" secondAttribute="centerY" id="bcz-zR-K4q"/>
+                                                    </constraints>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTc-CA-aev" userLabel="answerLabel">
+                                                    <rect key="frame" x="100" y="-0.33333333333333393" width="297" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iX4-El-YGL" firstAttribute="top" secondItem="hdp-zN-m0Q" secondAttribute="top" constant="10" id="CVf-Lh-wBr"/>
+                                                <constraint firstAttribute="trailing" secondItem="iX4-El-YGL" secondAttribute="trailing" constant="20" id="DYE-9s-BRe"/>
+                                                <constraint firstItem="iX4-El-YGL" firstAttribute="leading" secondItem="hdp-zN-m0Q" secondAttribute="leading" constant="20" id="I9C-Rk-QrG"/>
+                                                <constraint firstAttribute="trailing" secondItem="gTc-CA-aev" secondAttribute="trailing" constant="-44" id="bVw-Da-9KQ"/>
+                                                <constraint firstItem="gTc-CA-aev" firstAttribute="leading" secondItem="SDz-5A-hrN" secondAttribute="leading" constant="64" id="kmE-cY-Ah5"/>
+                                                <constraint firstAttribute="bottom" secondItem="iX4-El-YGL" secondAttribute="bottom" constant="10" id="tS5-CL-7OA"/>
+                                                <constraint firstItem="gTc-CA-aev" firstAttribute="centerY" secondItem="iX4-El-YGL" secondAttribute="centerY" id="zK3-vN-Gyb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="answerImageView" destination="SDz-5A-hrN" id="f7c-60-p8V"/>
+                                            <outlet property="answerLabel" destination="gTc-CA-aev" id="jIS-MZ-Up5"/>
+                                            <outlet property="containerView" destination="iX4-El-YGL" id="S7b-Mh-dMa"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="B8k-UW-o69"/>

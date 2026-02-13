@@ -41,6 +41,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				QuestionType.swift,
+				QuizCategory.swift,
+				QuizFactory.swift,
 				QuizModels.swift,
 			);
 			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
@@ -53,31 +55,7 @@
 			);
 			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
 		};
-		579C359F2F3DFED90039E047 /* Exceptions for "Models" folder in "PersonalityQuizTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				QuizCategory,
-			);
-			target = 5764BB762F3C33E000750835 /* PersonalityQuizTests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		579C359E2F3DFED90039E047 /* Exceptions for "Models" folder in "Compile Sources" phase from "PersonalityQuiz" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 5764BB5D2F3C33DD00750835 /* Sources */;
-			membershipExceptions = (
-				QuizCategory,
-			);
-		};
-		579C35A02F3DFED90039E047 /* Exceptions for "Models" folder in "Compile Sources" phase from "PersonalityQuizTests" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 5764BB732F3C33E000750835 /* Sources */;
-			membershipExceptions = (
-				QuizCategory,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5764BB632F3C33DD00750835 /* Controllers */ = {
@@ -92,9 +70,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				579C358A2F3DDB8F0039E047 /* Exceptions for "Models" folder in "PersonalityQuiz" target */,
-				579C359E2F3DFED90039E047 /* Exceptions for "Models" folder in "Compile Sources" phase from "PersonalityQuiz" target */,
-				579C359F2F3DFED90039E047 /* Exceptions for "Models" folder in "PersonalityQuizTests" target */,
-				579C35A02F3DFED90039E047 /* Exceptions for "Models" folder in "Compile Sources" phase from "PersonalityQuizTests" target */,
 			);
 			path = Models;
 			sourceTree = "<group>";

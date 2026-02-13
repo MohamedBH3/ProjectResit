@@ -1,6 +1,6 @@
 import Foundation
 
-struct Quiz {
+struct QuizCategory {
     let title: String
     let subtitle: String
     let iconName: String
