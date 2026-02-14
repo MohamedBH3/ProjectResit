@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		579C35A52F3EEFE00039E047 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C35A42F3EEFE00039E047 /* UIButton.swift */; };
+		579C35A52F3EEFE00039E047 /* UIButton+PressFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C35A42F3EEFE00039E047 /* UIButton+PressFeedback.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +31,7 @@
 		5764BB612F3C33DD00750835 /* PersonalityQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PersonalityQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5764BB772F3C33E000750835 /* PersonalityQuizTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersonalityQuizTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5764BB812F3C33E000750835 /* PersonalityQuizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersonalityQuizUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		579C35A42F3EEFE00039E047 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		579C35A42F3EEFE00039E047 /* UIButton+PressFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+PressFeedback.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -138,7 +138,7 @@
 		579C35782F3C8B910039E047 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				579C35A42F3EEFE00039E047 /* UIButton.swift */,
+				579C35A42F3EEFE00039E047 /* UIButton+PressFeedback.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -287,7 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				579C35A52F3EEFE00039E047 /* UIButton.swift in Sources */,
+				579C35A52F3EEFE00039E047 /* UIButton+PressFeedback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

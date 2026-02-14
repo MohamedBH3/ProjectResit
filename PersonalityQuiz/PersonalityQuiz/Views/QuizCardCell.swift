@@ -1,6 +1,7 @@
 import UIKit
 
-// Card-style table cell used on the quiz selection screen.
+/// Card-style table cell used on the quiz selection screen.
+/// Selection styling matches Figma, and press feedback is triggered by the controller on tap.
 final class QuizCardCell: UITableViewCell {
 
     static let reuseIdentifier = "QuizCardCell"
@@ -12,7 +13,7 @@ final class QuizCardCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
 
-    // Single accessory view that switches between chevron and checkmark.
+    /// Single accessory view that switches between chevron and checkmark.
     private let accessoryImageView = UIImageView()
 
     // MARK: - Style Constants
@@ -41,17 +42,27 @@ final class QuizCardCell: UITableViewCell {
         configureUI()
         setSelectedAppearance(false, animated: false)
     }
-    // MARK: - Press feedback
 
-    // Provides a subtle tap animation so selection feels responsive.
-    func animatePress() {
-        UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut], animations: {
-            self.cardView.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.12, delay: 0, options: [.curveEaseInOut], animations: {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // Ensure reused cells never keep a pressed scale.
+        cardView.transform = .identity
+        cardView.alpha = 1.0
+    }
+
+    // MARK: - Tap Feedback
+
+    /// Tap feedback shown when the row is selected.
+    /// This is intentionally triggered from `didSelectRowAt` so it feels like a tap (not a hold).
+    func animateTapFeedback() {
+        UIView.animate(withDuration: 0.09, delay: 0, options: [.curveEaseOut, .allowUserInteraction]) {
+            self.cardView.transform = CGAffineTransform(scaleX: 0.97, y: 0.97)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.14, delay: 0, options: [.curveEaseInOut, .allowUserInteraction]) {
                 self.cardView.transform = .identity
-            })
-        })
+            }
+        }
     }
 
     // MARK: - UI Setup
@@ -61,28 +72,23 @@ final class QuizCardCell: UITableViewCell {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
 
-        // Card container styling
         cardView.layer.cornerRadius = Style.cornerRadius
         cardView.layer.borderWidth = Style.borderWidth
         cardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardView)
 
-        // Icon on the left
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        // Title label
         titleLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         titleLabel.textColor = UIColor(hex: "282D37")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        // Subtitle label
         subtitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         subtitleLabel.textColor = UIColor(hex: "6A717B")
         subtitleLabel.numberOfLines = 2
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        // Accessory on the right (chevron/checkmark)
         accessoryImageView.contentMode = .scaleAspectFit
         accessoryImageView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -96,41 +102,37 @@ final class QuizCardCell: UITableViewCell {
         cardView.addSubview(accessoryImageView)
 
         NSLayoutConstraint.activate([
-            // Card layout inside cell
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
 
-            // Icon layout
             iconImageView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             iconImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 52),
             iconImageView.heightAnchor.constraint(equalToConstant: 52),
 
-            // Accessory layout
             accessoryImageView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
             accessoryImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             accessoryImageView.widthAnchor.constraint(equalToConstant: 22),
             accessoryImageView.heightAnchor.constraint(equalToConstant: 22),
 
-            // Text layout
             textStack.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 14),
             textStack.trailingAnchor.constraint(equalTo: accessoryImageView.leadingAnchor, constant: -12),
             textStack.centerYAnchor.constraint(equalTo: cardView.centerYAnchor)
         ])
     }
 
-    // MARK: - Public API
+    // MARK: - Content
 
-    // Populates cell content.
     func configure(with quiz: QuizCategory) {
         titleLabel.text = quiz.title
         subtitleLabel.text = quiz.subtitle
         iconImageView.image = UIImage(named: quiz.iconName)
     }
 
-    // Applies selected/unselected appearance to match Figma.
+    // MARK: - Selection UI
+
     func setSelectedAppearance(_ isSelected: Bool, animated: Bool) {
         let updates = {
             self.cardView.backgroundColor = isSelected ? Style.selectedFill : Style.normalFill
@@ -145,24 +147,7 @@ final class QuizCardCell: UITableViewCell {
             }
         }
 
-        guard animated else {
-            updates()
-            return
-        }
-
-        UIView.animate(withDuration: 0.12,
-                       delay: 0,
-                       options: [.curveEaseInOut],
-                       animations: {
-            updates()
-            self.cardView.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.12,
-                           delay: 0,
-                           options: [.curveEaseInOut],
-                           animations: {
-                self.cardView.transform = .identity
-            })
-        })
+        guard animated else { updates(); return }
+        UIView.animate(withDuration: 0.12, delay: 0, options: [.curveEaseInOut], animations: updates)
     }
 }
