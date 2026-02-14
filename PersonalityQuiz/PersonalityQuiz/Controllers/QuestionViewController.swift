@@ -38,6 +38,15 @@ final class QuestionViewController: UIViewController {
     private var secondsRemaining: Int = 15
     private var timer: Timer?
 
+    /// Prevents double-advances (timer firing + user tapping Next).
+    private var isAdvancing = false
+
+    /// Prevents timeout handling from re-running (e.g., if the VC is still around).
+    private var isHandlingTimeout = false
+
+    /// Prevents duplicate segue/push to results.
+    private var hasShownResults = false
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -49,6 +58,15 @@ final class QuestionViewController: UIViewController {
         showCurrentQuestion()
         startTimer()
         wireButtonFeedback()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Important: stop the timer so it cannot fire after navigating away.
+        // This fixes the “results screen re-applies the transition after a few seconds” issue.
+        timer?.invalidate()
+        timer = nil
     }
 
     deinit {
@@ -128,6 +146,7 @@ final class QuestionViewController: UIViewController {
 
     private func startTimer() {
         timer?.invalidate()
+        timer = nil
 
         secondsRemaining = 15
         updateTimerLabel()
@@ -135,13 +154,16 @@ final class QuestionViewController: UIViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self else { return }
 
+            // If we're in the middle of advancing or handling timeout, ignore ticks.
+            guard !self.isAdvancing, !self.isHandlingTimeout else { return }
+
             self.secondsRemaining -= 1
             self.updateTimerLabel()
 
             if self.secondsRemaining <= 0 {
                 self.timer?.invalidate()
-                self.commitCurrentAnswerToScoring()
-                self.goToNextQuestion()
+                self.timer = nil
+                self.handleTimeExpired()
             }
         }
     }
@@ -150,9 +172,44 @@ final class QuestionViewController: UIViewController {
         timerLabel.text = String(format: "00:%02d", max(secondsRemaining, 0))
     }
 
+    /// Option B: When time expires, show a quick alert and auto-advance.
+    /// (No scoring is added for unanswered questions on timeout.)
+    private func handleTimeExpired() {
+        guard !isHandlingTimeout else { return }
+        isHandlingTimeout = true
+
+        // Prevent any taps while timeout UI is showing.
+        setInteractionEnabled(false)
+
+        let alert = UIAlertController(title: "Time’s up!", message: "Moving to the next question.", preferredStyle: .alert)
+        present(alert, animated: true)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
+            guard let self else { return }
+
+            alert.dismiss(animated: true)
+
+            // Re-enable interaction before advancing to ensure UI stays responsive.
+            self.setInteractionEnabled(true)
+
+            self.isHandlingTimeout = false
+            self.goToNextQuestion(fromTimeout: true)
+        }
+    }
+
+    private func setInteractionEnabled(_ enabled: Bool) {
+        nextButton.isEnabled = enabled
+        answersTableView.isUserInteractionEnabled = enabled
+        rangeSlider.isUserInteractionEnabled = enabled
+    }
+
     // MARK: - Rendering
 
     private func showCurrentQuestion() {
+        isAdvancing = false
+        isHandlingTimeout = false
+        setInteractionEnabled(true)
+
         let question = quiz.questions[currentQuestionIndex]
 
         questionNumberLabel.text = "Question \(currentQuestionIndex + 1) of \(quiz.questions.count)"
@@ -200,26 +257,21 @@ final class QuestionViewController: UIViewController {
     // MARK: - Scoring
 
     /// Converts the user’s selection on the current question into one or more `resultID`s.
-    /// This keeps the scoring rules in one place and makes navigation logic cleaner.
     private func commitCurrentAnswerToScoring() {
         let question = quiz.questions[currentQuestionIndex]
 
         switch question.type {
         case .single:
             guard let index = selectedSingleIndex else { return }
-            let resultID = question.answers[index].resultID
-            collectedResultIDs.append(resultID)
+            collectedResultIDs.append(question.answers[index].resultID)
 
         case .multiple:
             guard !selectedMultipleIndexes.isEmpty else { return }
-            let ids = selectedMultipleIndexes
-                .sorted()
-                .map { question.answers[$0].resultID }
+            let ids = selectedMultipleIndexes.sorted().map { question.answers[$0].resultID }
             collectedResultIDs.append(contentsOf: ids)
 
         case .ranged:
             // Map slider value (0...1) into A/B/C/D buckets.
-            // This works with your current ranged questions that only show endpoints.
             let value = rangeSlider.value
             let resultID: String
             switch value {
@@ -238,16 +290,12 @@ final class QuestionViewController: UIViewController {
             partial[id, default: 0] += 1
         }
 
-        // Default to "A" so the UI always has something sensible to show.
-        let winner = counts.max(by: { $0.value < $1.value })?.key
-        return winner ?? "A"
+        // Default to "A" so the UI always has something to show.
+        return counts.max(by: { $0.value < $1.value })?.key ?? "A"
     }
 
-    /// Builds a display-ready result (title/description) using the quiz title + winning ID.
     private func buildQuizResult() -> QuizResult {
         let winner = dominantResultID()
-
-        // These mappings can be expanded later without changing controller logic.
         let mapping = ResultsViewController.resultMapping(for: quiz.title, resultID: winner)
 
         return QuizResult(
@@ -260,7 +308,22 @@ final class QuestionViewController: UIViewController {
 
     // MARK: - Navigation
 
-    private func goToNextQuestion() {
+    private func goToNextQuestion(fromTimeout: Bool = false) {
+        // Prevent double-advance (timer + Next tap, or repeated timeout callback).
+        guard !isAdvancing else { return }
+        isAdvancing = true
+
+        // Stop timer immediately when changing screens/state.
+        timer?.invalidate()
+        timer = nil
+
+        // If this advance is NOT caused by timeout, we score the answer.
+        // If it's timeout, we intentionally do NOT add scoring for this question.
+        if !fromTimeout {
+            commitCurrentAnswerToScoring()
+        }
+
+        // Clear selections for the next question.
         selectedSingleIndex = nil
         selectedMultipleIndexes.removeAll()
 
@@ -268,6 +331,9 @@ final class QuestionViewController: UIViewController {
             currentQuestionIndex += 1
             showCurrentQuestion()
         } else {
+            guard !hasShownResults else { return }
+            hasShownResults = true
+
             let result = buildQuizResult()
             performSegue(withIdentifier: "showResults", sender: result)
         }
@@ -286,12 +352,18 @@ final class QuestionViewController: UIViewController {
     @IBAction private func nextTapped(_ sender: UIButton) {
         sender.applyColorFeedback(darkerHex: "3F7DDA")
 
+        // Prevent double-advance if the timeout just fired / user taps fast.
+        guard !isAdvancing, !isHandlingTimeout else { return }
+
         let currentQuestion = quiz.questions[currentQuestionIndex]
         if currentQuestion.type == .single, selectedSingleIndex == nil { return }
         if currentQuestion.type == .multiple, selectedMultipleIndexes.isEmpty { return }
 
-        commitCurrentAnswerToScoring()
-        goToNextQuestion()
+        // Stop the timer so it cannot fire during navigation.
+        timer?.invalidate()
+        timer = nil
+
+        goToNextQuestion(fromTimeout: false)
     }
 
     // MARK: - Selection Helpers
@@ -342,6 +414,7 @@ extension QuestionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !isAdvancing, !isHandlingTimeout else { return }
 
         if let tappedCell = tableView.cellForRow(at: indexPath) as? AnswerCell {
             tappedCell.animateTapFeedback()
