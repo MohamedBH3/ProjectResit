@@ -1,7 +1,7 @@
 import Foundation
 
-// Creates quiz content based on the selected category.
-// Keeps view controllers free of hardcoded quiz data.
+/// Creates quiz content based on the selected category.
+/// Keeps view controllers free of hardcoded quiz data.
 enum QuizFactory {
 
     static func makeQuestions(for categoryTitle: String) -> [Question] {
@@ -65,13 +65,17 @@ enum QuizFactory {
     }
 
     private static func animalQuestions() -> [Question] {
-        Array(repeating: Question(text: "Animal question", type: .single, answers: sampleAnimalAnswers()),
-              count: 10)
+        Array(
+            repeating: Question(text: "Animal question", type: .single, answers: sampleAnimalAnswers()),
+            count: 10
+        )
     }
 
     private static func musicQuestions() -> [Question] {
-        Array(repeating: Question(text: "Music question", type: .single, answers: sampleMusicAnswers()),
-              count: 10)
+        Array(
+            repeating: Question(text: "Music question", type: .single, answers: sampleMusicAnswers()),
+            count: 10
+        )
     }
 
     private static func sampleFoodAnswers() -> [Answer] {

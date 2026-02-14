@@ -1,6 +1,7 @@
 import UIKit
 
 /// Handles presentation and logic of quiz questions.
+/// Computes the final result and navigates to `ResultsViewController` at the end.
 final class QuestionViewController: UIViewController {
 
     // MARK: - IBOutlets
@@ -20,7 +21,7 @@ final class QuestionViewController: UIViewController {
 
     // MARK: - Inputs
 
-    /// Provided by QuizSelectionViewController during segue.
+    /// Provided by `QuizSelectionViewController` during segue.
     var quizCategory: QuizCategory!
 
     // MARK: - State
@@ -30,6 +31,9 @@ final class QuestionViewController: UIViewController {
 
     private var selectedSingleIndex: Int?
     private var selectedMultipleIndexes = Set<Int>()
+
+    /// Collected scoring IDs across the whole quiz (e.g., ["A", "B", "A", "D"]).
+    private var collectedResultIDs: [String] = []
 
     private var secondsRemaining: Int = 15
     private var timer: Timer?
@@ -65,7 +69,6 @@ final class QuestionViewController: UIViewController {
         progressView.trackTintColor = UIColor(hex: "ECECF1")
         progressView.progressTintColor = UIColor(hex: "4D8AE0")
 
-        // Allow the question to grow vertically to avoid overlapping other labels.
         questionLabel.textColor = UIColor(hex: "282D37")
         questionLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         questionLabel.numberOfLines = 0
@@ -75,7 +78,6 @@ final class QuestionViewController: UIViewController {
         instructionLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         instructionLabel.numberOfLines = 0
 
-        // Ensure Auto Layout prioritizes showing the full question text.
         questionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         instructionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
@@ -106,6 +108,7 @@ final class QuestionViewController: UIViewController {
             questions: QuizFactory.makeQuestions(for: quizCategory.title)
         )
     }
+
     // MARK: - Button Feedback Wiring
 
     private func wireButtonFeedback() {
@@ -137,6 +140,7 @@ final class QuestionViewController: UIViewController {
 
             if self.secondsRemaining <= 0 {
                 self.timer?.invalidate()
+                self.commitCurrentAnswerToScoring()
                 self.goToNextQuestion()
             }
         }
@@ -193,6 +197,67 @@ final class QuestionViewController: UIViewController {
         rightRangeLabel.isHidden = hidden
     }
 
+    // MARK: - Scoring
+
+    /// Converts the user’s selection on the current question into one or more `resultID`s.
+    /// This keeps the scoring rules in one place and makes navigation logic cleaner.
+    private func commitCurrentAnswerToScoring() {
+        let question = quiz.questions[currentQuestionIndex]
+
+        switch question.type {
+        case .single:
+            guard let index = selectedSingleIndex else { return }
+            let resultID = question.answers[index].resultID
+            collectedResultIDs.append(resultID)
+
+        case .multiple:
+            guard !selectedMultipleIndexes.isEmpty else { return }
+            let ids = selectedMultipleIndexes
+                .sorted()
+                .map { question.answers[$0].resultID }
+            collectedResultIDs.append(contentsOf: ids)
+
+        case .ranged:
+            // Map slider value (0...1) into A/B/C/D buckets.
+            // This works with your current ranged questions that only show endpoints.
+            let value = rangeSlider.value
+            let resultID: String
+            switch value {
+            case ..<0.25: resultID = "A"
+            case ..<0.50: resultID = "B"
+            case ..<0.75: resultID = "C"
+            default:      resultID = "D"
+            }
+            collectedResultIDs.append(resultID)
+        }
+    }
+
+    /// Returns the most common `resultID`. If there is a tie, it returns the first highest.
+    private func dominantResultID() -> String {
+        let counts = collectedResultIDs.reduce(into: [String: Int]()) { partial, id in
+            partial[id, default: 0] += 1
+        }
+
+        // Default to "A" so the UI always has something sensible to show.
+        let winner = counts.max(by: { $0.value < $1.value })?.key
+        return winner ?? "A"
+    }
+
+    /// Builds a display-ready result (title/description) using the quiz title + winning ID.
+    private func buildQuizResult() -> QuizResult {
+        let winner = dominantResultID()
+
+        // These mappings can be expanded later without changing controller logic.
+        let mapping = ResultsViewController.resultMapping(for: quiz.title, resultID: winner)
+
+        return QuizResult(
+            quizTitle: quiz.title,
+            resultTitle: mapping.title,
+            resultDescription: mapping.description,
+            dominantResultID: winner
+        )
+    }
+
     // MARK: - Navigation
 
     private func goToNextQuestion() {
@@ -203,8 +268,16 @@ final class QuestionViewController: UIViewController {
             currentQuestionIndex += 1
             showCurrentQuestion()
         } else {
-            // Results segue can be added later.
-            // performSegue(withIdentifier: "showResults", sender: nil)
+            let result = buildQuizResult()
+            performSegue(withIdentifier: "showResults", sender: result)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showResults",
+           let destination = segue.destination as? ResultsViewController,
+           let result = sender as? QuizResult {
+            destination.quizResult = result
         }
     }
 
@@ -217,6 +290,7 @@ final class QuestionViewController: UIViewController {
         if currentQuestion.type == .single, selectedSingleIndex == nil { return }
         if currentQuestion.type == .multiple, selectedMultipleIndexes.isEmpty { return }
 
+        commitCurrentAnswerToScoring()
         goToNextQuestion()
     }
 
@@ -257,7 +331,6 @@ extension QuestionViewController: UITableViewDataSource, UITableViewDelegate {
 
         cell.configure(text: answer.text, imageName: answer.imageName)
 
-        /// Always re-apply selection state for reuse safety.
         let selected = isAnswerSelected(row: indexPath.row, questionType: question.type)
         cell.setSelectedAppearance(selected, animated: false)
 
@@ -270,7 +343,6 @@ extension QuestionViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        // Tap feedback on the exact tapped card.
         if let tappedCell = tableView.cellForRow(at: indexPath) as? AnswerCell {
             tappedCell.animateTapFeedback()
         }
@@ -279,7 +351,6 @@ extension QuestionViewController: UITableViewDataSource, UITableViewDelegate {
 
         switch question.type {
         case .single:
-            // Unselect previous cell UI if needed.
             if let previous = selectedSingleIndex,
                previous != indexPath.row,
                let previousCell = tableView.cellForRow(at: IndexPath(row: previous, section: 0)) as? AnswerCell {
@@ -289,7 +360,6 @@ extension QuestionViewController: UITableViewDataSource, UITableViewDelegate {
             selectedSingleIndex = indexPath.row
             selectedMultipleIndexes.removeAll()
 
-            // Select tapped cell UI.
             if let tappedCell = tableView.cellForRow(at: indexPath) as? AnswerCell {
                 tappedCell.setSelectedAppearance(true, animated: true)
             }

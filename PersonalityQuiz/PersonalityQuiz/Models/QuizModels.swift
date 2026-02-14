@@ -1,22 +1,31 @@
 import Foundation
 
-// Represents a single answer option
+/// Represents a single answer option displayed to the user.
+/// `resultID` is used to score the quiz (e.g., "A", "B", "C", "D").
 struct Answer {
-    let text: String          // Display text
-    let imageName: String     // Associated image asset name
-    let resultID: String      // Used later for result calculation
+    let text: String
+    let imageName: String
+    let resultID: String
 }
 
-// Represents a question in the quiz
+/// Represents a single question in a quiz.
 struct Question {
-    let text: String              // Question title
-    let type: QuestionType        // Question type (single/multiple/ranged)
-    let answers: [Answer]         // Possible answers
+    let text: String
+    let type: QuestionType
+    let answers: [Answer]
 }
 
-// Represents an entire quiz category
+/// Represents an entire quiz (category + its questions).
 struct Quiz {
-    let id: String                // Unique identifier
-    let title: String             // Quiz title
-    let questions: [Question]     // All questions for this quiz
+    let id: String
+    let title: String
+    let questions: [Question]
+}
+
+/// Represents the final computed result that will be displayed on the Results screen.
+struct QuizResult {
+    let quizTitle: String
+    let resultTitle: String
+    let resultDescription: String
+    let dominantResultID: String
 }
