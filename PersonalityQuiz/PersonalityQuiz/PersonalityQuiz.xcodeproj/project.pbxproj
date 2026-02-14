@@ -48,6 +48,7 @@
 				QuestionType.swift,
 				QuizCategory.swift,
 				QuizFactory.swift,
+				QuizHistoryEntry.swift,
 				QuizModels.swift,
 			);
 			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;
@@ -56,6 +57,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AnswerCell.swift,
+				HistoryCell.swift,
 				QuizCardCell.swift,
 			);
 			target = 5764BB602F3C33DD00750835 /* PersonalityQuiz */;

@@ -335,6 +335,12 @@ final class QuestionViewController: UIViewController {
             hasShownResults = true
 
             let result = buildQuizResult()
+            let entry = QuizHistoryEntry(
+                quizTitle: quiz.title,
+                resultTitle: result.resultTitle,
+                completedAt: Date()
+            )
+            QuizHistoryStore.shared.add(entry)
             performSegue(withIdentifier: "showResults", sender: result)
         }
     }
