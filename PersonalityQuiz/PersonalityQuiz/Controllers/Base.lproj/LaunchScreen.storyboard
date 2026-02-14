@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,29 +15,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ijw-V4-ALW">
-                                <rect key="frame" x="136.66666666666666" y="391" width="119.99999999999997" height="120"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Personality Quiz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFJ-lC-wad" userLabel="launchTitleLabel">
-                                <rect key="frame" x="93" y="569" width="284" height="21"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appicon" translatesAutoresizingMaskIntoConstraints="NO" id="Ijw-V4-ALW">
+                                <rect key="frame" x="96.666666666666686" y="351" width="200" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="w1V-ht-13d"/>
+                                    <constraint firstAttribute="width" constant="200" id="1lx-5L-g65"/>
+                                    <constraint firstAttribute="height" constant="200" id="pWT-3g-k3V"/>
                                 </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Personality Quiz" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFJ-lC-wad" userLabel="launchTitleLabel">
+                                <rect key="frame" x="93.333333333333329" y="567" width="206.33333333333337" height="33.666666666666629"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.58753407000000002" green="0.75308930870000002" blue="0.99321979279999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="OFJ-lC-wad" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" id="74O-59-bTW"/>
-                            <constraint firstItem="OFJ-lC-wad" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="93" id="RSv-d2-IOF"/>
-                            <constraint firstItem="Ijw-V4-ALW" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YlI-je-Rno"/>
-                            <constraint firstItem="Ijw-V4-ALW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="273" id="b1l-Cs-3Nb"/>
-                            <constraint firstItem="Ijw-V4-ALW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="136.66666666666663" id="bo3-2S-5Yf"/>
-                            <constraint firstItem="OFJ-lC-wad" firstAttribute="top" secondItem="Ijw-V4-ALW" secondAttribute="bottom" constant="58" id="g2C-oT-2YR"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="OFJ-lC-wad" secondAttribute="bottom" constant="194" id="nxT-GZ-hG5"/>
+                            <constraint firstItem="OFJ-lC-wad" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="IcF-ie-8ob"/>
+                            <constraint firstItem="Ijw-V4-ALW" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="pNY-mb-eHY"/>
+                            <constraint firstItem="Ijw-V4-ALW" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="s6R-iS-edR"/>
+                            <constraint firstItem="OFJ-lC-wad" firstAttribute="top" secondItem="Ijw-V4-ALW" secondAttribute="bottom" constant="16" id="uAH-1d-YhL"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -48,8 +45,6 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="appicon" width="341.33334350585938" height="341.33334350585938"/>
     </resources>
 </document>

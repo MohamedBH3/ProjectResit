@@ -89,7 +89,7 @@ final class AnswerCell: UITableViewCell {
 
     func configure(text: String, imageName: String) {
         answerLabel.text = text
-        answerImageView.image = UIImage(named: imageName)
+        answerImageView.image = UIImage(systemName: imageName)
     }
 
     func setSelectedAppearance(_ isSelected: Bool, animated: Bool) {

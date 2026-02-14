@@ -101,9 +101,46 @@ final class ResultsViewController: UIViewController {
     @IBAction private func shareTapped(_ sender: UIButton) {
         sender.applyColorFeedback(darkerHex: "3F7DDA")
 
-        let textToShare = "\(quizResult.resultTitle)\n\n\(quizResult.resultDescription)"
-        let activityVC = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+        let shareText = buildShareText()
+
+        let activityVC = UIActivityViewController(
+            activityItems: [shareText],
+            applicationActivities: nil
+        )
+
+        // Sets an email/AirDrop style subject where supported.
+        activityVC.setValue("My \(quizResult.quizTitle) Result", forKey: "subject")
+
+        // iPad safety: anchor the popover to the share button.
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = sender
+            popover.sourceRect = sender.bounds
+        }
+
         present(activityVC, animated: true)
+    }
+
+    private func buildShareText() -> String {
+        // Example:
+        // I got The Bold Food Explorer on the Food Quiz 🍽️
+        // “You’re drawn to strong flavors...”
+        // What did you get?
+        let emoji = quizEmoji(for: quizResult.quizTitle)
+
+        let titleLine = "I got \(quizResult.resultTitle) on the \(quizResult.quizTitle) \(emoji)"
+        let descriptionLine = "“\(quizResult.resultDescription)”"
+        let ctaLine = "What did you get?"
+
+        return [titleLine, descriptionLine, ctaLine].joined(separator: "\n")
+    }
+
+    private func quizEmoji(for quizTitle: String) -> String {
+        switch quizTitle {
+        case "Food Quiz": return "🍽️"
+        case "Animal Quiz": return "🐾"
+        case "Music Quiz": return "🎧"
+        default: return "✨"
+        }
     }
 
     @IBAction private func restartTapped(_ sender: UIButton) {

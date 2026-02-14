@@ -44,7 +44,6 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Start Quiz"/>
                                         <connections>
-                                            <action selector="startQuizTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAc-qp-YTJ"/>
                                             <segue destination="DJf-Ag-QNb" kind="show" identifier="showQuiz" id="2Jx-E9-5SR"/>
                                         </connections>
                                     </button>
@@ -57,7 +56,7 @@
                                         <buttonConfiguration key="configuration" style="plain" title="History"/>
                                         <connections>
                                             <action selector="historyTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="en0-8E-CMf"/>
-                                            <segue destination="Tnl-Om-KW7" kind="show" identifier="showHistory" id="WgK-SZ-VcK"/>
+                                            <segue destination="Tnl-Om-KW7" kind="presentation" identifier="showHistory" id="WgK-SZ-VcK"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -83,7 +82,7 @@
                     <connections>
                         <outlet property="historyButton" destination="syS-20-YYJ" id="fAT-vP-f1t"/>
                         <outlet property="quizTableView" destination="gVp-9j-XmR" id="Lon-6P-r4J"/>
-                        <outlet property="startQuizButton" destination="zkK-DC-iBP" id="jDO-lc-smV"/>
+                        <outlet property="startQuizButton" destination="zkK-DC-iBP" id="3r7-6L-tK8"/>
                         <outlet property="subtitleLabel" destination="pWa-t0-2am" id="FWo-J9-MNQ"/>
                         <outlet property="titleLabel" destination="BHk-JA-N2A" id="4MC-ii-ZmA"/>
                     </connections>
@@ -377,7 +376,7 @@
                         <outlet property="resultTitleLabel" destination="NSh-xg-1f3" id="5TS-Ba-aOl"/>
                         <outlet property="shareButton" destination="2zl-Ke-ad9" id="hUG-nr-8gS"/>
                         <outlet property="viewHistoryButton" destination="tEj-bS-3jB" id="VQl-fW-1SC"/>
-                        <segue destination="Tnl-Om-KW7" kind="push" identifier="showHistory" id="jlc-ml-Pyn"/>
+                        <segue destination="Tnl-Om-KW7" kind="presentation" identifier="showHistory" id="jlc-ml-Pyn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAJ-bY-IKJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -389,11 +388,11 @@
             <objects>
                 <viewController id="Tnl-Om-KW7" userLabel="HistoryViewController" customClass="HistoryViewController" customModule="PersonalityQuiz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fiM-kK-9Xq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4Vp-pN-aN0" userLabel="tableView">
-                                <rect key="frame" x="0.0" y="162" width="393" height="622"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="724"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HistoryCell" id="6sr-TG-hJP" customClass="HistoryCell" customModule="PersonalityQuiz">
@@ -409,25 +408,31 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="EkB-sE-zmS">
                                                             <rect key="frame" x="16" y="16" width="329" height="73.333333333333329"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDa-Ix-KoU" userLabel="quizTitleLabel">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="329" height="20.666666666666668"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDa-Ix-KoU" userLabel="quizTitleLabel">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="329" height="20.333333333333332"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYE-iP-YOO" userLabel="resultTitleLabel">
-                                                                    <rect key="frame" x="0.0" y="26.666666666666664" width="329" height="20.333333333333336"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYE-iP-YOO" userLabel="resultTitleLabel">
+                                                                    <rect key="frame" x="0.0" y="26.333333333333336" width="329" height="20.666666666666664"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWf-yh-39k" userLabel="dateLabel">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWf-yh-39k" userLabel="dateLabel">
                                                                     <rect key="frame" x="0.0" y="53" width="329" height="20.333333333333329"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="20.333333333333329" id="ECp-mZ-Id2"/>
+                                                                    </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="UYE-iP-YOO" firstAttribute="centerY" secondItem="EkB-sE-zmS" secondAttribute="centerY" id="NY3-EI-BmX"/>
+                                                            </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -456,10 +461,10 @@
                                 </prototypes>
                             </tableView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sdn-Ln-3aX" userLabel="EmptyStateContainerView">
-                                <rect key="frame" x="0.0" y="162" width="393" height="622"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="724"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gE0-Cz-HmG">
-                                        <rect key="frame" x="102.66666666666669" y="254.66666666666666" width="188" height="112.66666666666666"/>
+                                        <rect key="frame" x="102.66666666666669" y="305.66666666666669" width="188" height="112.66666666666669"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Quiz History Yet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZT-9c-f4b" userLabel="noHistoryTitleLabel">
                                                 <rect key="frame" x="19.666666666666657" y="0.0" width="148.66666666666666" height="20.333333333333332"/>
@@ -539,7 +544,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="jlc-ml-Pyn"/>
+        <segue reference="WgK-SZ-VcK"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
