@@ -2,71 +2,123 @@ import UIKit
 
 final class TodoCell: UITableViewCell {
 
+    // MARK: - Public
+
+    var onToggleCompletion: (() -> Void)?
+
+    func configure(title: String, subtitle: String, subtitleColor: UIColor, isCompleted: Bool) {
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+        subtitleLabel.textColor = subtitleColor
+
+        let iconName = isCompleted ? "checkmark.circle.fill" : "circle"
+        let image = UIImage(systemName: iconName)
+
+        statusButton.setImage(image, for: .normal)
+        statusButton.tintColor = isCompleted ? .systemBlue : .systemGray3
+    }
+
+    // MARK: - UI
+
     private let cardView = UIView()
+    private let statusButton = UIButton(type: .system)
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let chevronImageView = UIImageView()
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    // MARK: - Init
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        buildUI()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        buildUI()
+    }
+
+    // MARK: - Setup
+
+    private func buildUI() {
+        selectionStyle = .none
         backgroundColor = .clear
         contentView.backgroundColor = .clear
 
-        cardView.translatesAutoresizingMaskIntoConstraints = false
+        // Card
         cardView.backgroundColor = .white
         cardView.layer.cornerRadius = 12
-        cardView.layer.masksToBounds = false
+        cardView.layer.borderWidth = 1
+        cardView.layer.borderColor = UIColor.systemGray5.cgColor
 
-        // Subtle shadow like your Figma cards
         cardView.layer.shadowColor = UIColor.black.cgColor
         cardView.layer.shadowOpacity = 0.06
         cardView.layer.shadowRadius = 8
         cardView.layer.shadowOffset = CGSize(width: 0, height: 2)
 
+        cardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardView)
 
+        // Completion circle (bigger like Figma)
+        statusButton.translatesAutoresizingMaskIntoConstraints = false
+        statusButton.tintColor = .systemGray3
+        statusButton.contentHorizontalAlignment = .center
+        statusButton.contentVerticalAlignment = .center
+        statusButton.addTarget(self, action: #selector(statusTapped), for: .touchUpInside)
+        cardView.addSubview(statusButton)
+
+        // Title
+        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        titleLabel.textColor = .label
+        titleLabel.numberOfLines = 1
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(titleLabel)
+
+        // Subtitle
+        subtitleLabel.font = .systemFont(ofSize: 13, weight: .medium)
+        subtitleLabel.numberOfLines = 1
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(subtitleLabel)
+
+        // Chevron
+        chevronImageView.image = UIImage(systemName: "chevron.right")
+        chevronImageView.tintColor = .tertiaryLabel
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(chevronImageView)
+
         NSLayoutConstraint.activate([
+            // Card margins
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+
+            // Status button (bigger)
+            statusButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 14),
+            statusButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            statusButton.widthAnchor.constraint(equalToConstant: 28),
+            statusButton.heightAnchor.constraint(equalToConstant: 28),
+
+            // Chevron
+            chevronImageView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -14),
+            chevronImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 12),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 12),
+
+            // Title
+            titleLabel.leadingAnchor.constraint(equalTo: statusButton.trailingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
+
+            // Subtitle
+            subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            subtitleLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            subtitleLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
         ])
-
-        // Put the default cell labels inside the card
-        textLabel?.translatesAutoresizingMaskIntoConstraints = false
-        detailTextLabel?.translatesAutoresizingMaskIntoConstraints = false
-        imageView?.translatesAutoresizingMaskIntoConstraints = false
-
-        if let imageView, let textLabel, let detailTextLabel {
-            cardView.addSubview(imageView)
-            cardView.addSubview(textLabel)
-            cardView.addSubview(detailTextLabel)
-
-            textLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            detailTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-            detailTextLabel.numberOfLines = 1
-
-            NSLayoutConstraint.activate([
-                imageView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-                imageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-                imageView.widthAnchor.constraint(equalToConstant: 24),
-                imageView.heightAnchor.constraint(equalToConstant: 24),
-
-                textLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
-                textLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 12),
-                textLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
-
-                detailTextLabel.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 4),
-                detailTextLabel.leadingAnchor.constraint(equalTo: textLabel.leadingAnchor),
-                detailTextLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
-                detailTextLabel.bottomAnchor.constraint(lessThanOrEqualTo: cardView.bottomAnchor, constant: -16)
-            ])
-        }
-
-        // Keeps chevron outside the card nicer
-        separatorInset = UIEdgeInsets(top: 0, left: 1000, bottom: 0, right: 0)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        cardView.layer.shadowPath = UIBezierPath(roundedRect: cardView.bounds, cornerRadius: cardView.layer.cornerRadius).cgPath
+    @objc private func statusTapped() {
+        onToggleCompletion?()
     }
 }
