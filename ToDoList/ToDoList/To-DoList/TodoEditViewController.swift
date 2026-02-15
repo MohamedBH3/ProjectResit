@@ -220,20 +220,29 @@ final class TodoEditViewController: UIViewController {
         guard dueDateSwitch.isOn else { return }
 
         let initialDate = workingTodo.dueDate ?? Date()
-        let pickerVC = DueDatePickerViewController(initialDate: initialDate) { [weak self] date in
-            guard let self else { return }
-            self.workingTodo.dueDate = date
-            self.refreshDueDateUI()
 
-            if self.workingTodo.reminderEnabled {
-                NotificationScheduler.scheduleNotification(for: self.workingTodo)
+        let pickerVC = DueDatePickerViewController(
+            initialDate: initialDate,
+            onChange: { [weak self] date in
+                guard let self else { return }
+                self.workingTodo.dueDate = date
+                self.refreshDueDateUI()   // ✅ updates immediately while scrolling
+            },
+            onDone: { [weak self] date in
+                guard let self else { return }
+                self.dueDateSwitch.setOn(true, animated: true)
+                self.workingTodo.dueDate = date
+                self.refreshDueDateUI()
+
+                if self.workingTodo.reminderEnabled {
+                    NotificationScheduler.scheduleNotification(for: self.workingTodo)
+                }
             }
-        }
+        )
 
         pickerVC.modalPresentationStyle = .pageSheet
         if let sheet = pickerVC.sheetPresentationController {
-            // ✅ FIX: shorter sheet (removes the huge empty space)
-            sheet.detents = [.custom { _ in 300 }]
+            sheet.detents = [.custom(resolver: { _ in 320 })]
             sheet.prefersGrabberVisible = true
         }
 
