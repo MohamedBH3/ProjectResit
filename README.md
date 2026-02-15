@@ -27,7 +27,7 @@ Both apps were built using:
 
 ## 🎨 Figma Prototype
 **High-fidelity prototype:**  
-https://www.figma.com/design/aY5Lh9Rc1fHD5DJszYGUbr/Resit-Project?node-id=7-125&t=NL8eNbRxye6yvXQj-1
+https://www.figma.com/proto/aY5Lh9Rc1fHD5DJszYGUbr/Resit-Project?node-id=7-125&p=f&t=1DoCoWgzEsM2M178-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=7%3A125
 
 ---
 
@@ -100,7 +100,7 @@ Results can be shared using **UIActivityViewController**:
 A task management app built using **UIKit + Storyboards**, designed to match the provided Figma UI closely.
 
 ## 🎨 Figma Prototype
-*(Link to be added)*
+https://www.figma.com/proto/aY5Lh9Rc1fHD5DJszYGUbr/Resit-Project?node-id=152-2&p=f&t=H7p63Pz8pB6KM5ww-1&scaling=min-zoom&content-scaling=fixed&page-id=2%3A2&starting-point-node-id=152%3A2
 
 ---
 
