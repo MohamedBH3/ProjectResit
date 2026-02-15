@@ -3,7 +3,7 @@
 
 ![Swift](https://img.shields.io/badge/Swift-5-orange)
 ![Platform](https://img.shields.io/badge/iOS-17%2B-blue)
-![Xcode](https://img.shields.io/badge/Xcode-15%2F16-blue)
+![Xcode](https://img.shields.io/badge/Xcode-16.4-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-MVC-green)
 
 This repository contains **both required guided projects** for the **IT8108 Re-Assessment**:
@@ -175,7 +175,7 @@ Both apps follow:
 
 ## ✅ Requirements
 - macOS
-- **Xcode 15 or 16**
+- **Xcode 16+**
 - iOS **17.0+** (Simulator)
 
 ---
