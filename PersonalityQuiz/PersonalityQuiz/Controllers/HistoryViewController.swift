@@ -4,7 +4,6 @@ final class HistoryViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
 
-    // Empty state container + outlets
     @IBOutlet private weak var emptyStateContainer: UIView!
     @IBOutlet private weak var startQuizButton: UIButton!
 
@@ -18,8 +17,9 @@ final class HistoryViewController: UIViewController {
 
         configureTableView()
         styleButton()
+
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 90
+        tableView.estimatedRowHeight = 110
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +51,6 @@ final class HistoryViewController: UIViewController {
     }
 
     @IBAction private func startQuizTapped(_ sender: UIButton) {
-        // If you want: pop back to quiz selection
         navigationController?.popToRootViewController(animated: true)
     }
 }
@@ -65,15 +64,14 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell.reuseID, for: indexPath) as? HistoryCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: HistoryCell.reuseID,
+            for: indexPath
+        ) as? HistoryCell else {
             return UITableViewCell()
         }
 
         cell.configure(entry: entries[indexPath.row])
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110 // adjust if you want it taller like Figma
     }
 }

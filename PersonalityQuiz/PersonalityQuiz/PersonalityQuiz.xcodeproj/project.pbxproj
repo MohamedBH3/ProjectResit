@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57401A682F42576E00F1F96C /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57401A642F42576E00F1F96C /* UIColor+Hex.swift */; };
 		579C35A52F3EEFE00039E047 /* UIButton+PressFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C35A42F3EEFE00039E047 /* UIButton+PressFeedback.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		57401A642F42576E00F1F96C /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		5764BB612F3C33DD00750835 /* PersonalityQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PersonalityQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5764BB772F3C33E000750835 /* PersonalityQuizTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersonalityQuizTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5764BB812F3C33E000750835 /* PersonalityQuizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersonalityQuizUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				579C35A42F3EEFE00039E047 /* UIButton+PressFeedback.swift */,
+				57401A642F42576E00F1F96C /* UIColor+Hex.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57401A682F42576E00F1F96C /* UIColor+Hex.swift in Sources */,
 				579C35A52F3EEFE00039E047 /* UIButton+PressFeedback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

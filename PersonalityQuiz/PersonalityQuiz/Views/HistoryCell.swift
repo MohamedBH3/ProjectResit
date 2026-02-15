@@ -20,12 +20,27 @@ final class HistoryCell: UITableViewCell {
         cardView.layer.borderWidth = 1
         cardView.layer.borderColor = UIColor.systemGray5.cgColor
         cardView.backgroundColor = .systemBackground
+
+        // Make the label behave like a normal label (no weird attributed/link styling).
+        resultTitleLabel.numberOfLines = 1
+        resultTitleLabel.lineBreakMode = .byTruncatingTail
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        quizTitleLabel.text = nil
+        resultTitleLabel.text = nil
+        resultTitleLabel.attributedText = nil
+        dateLabel.text = nil
     }
 
     func configure(entry: QuizHistoryEntry) {
         quizTitleLabel.text = entry.quizTitle
-        resultTitleLabel.text = entry.resultTitle
 
+        // Ensure plain text (not attributed) so it can’t render like a link.
+        resultTitleLabel.attributedText = nil
+        resultTitleLabel.text = entry.resultTitle
         resultTitleLabel.textColor = UIColor(hex: "4D8AE0")
 
         dateLabel.textColor = UIColor(hex: "6A717B")

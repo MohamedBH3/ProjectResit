@@ -127,7 +127,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instruction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Aa-Qo-8oH" userLabel="instructionLabel">
-                                <rect key="frame" x="20" y="308" width="353" height="21.666666666666686"/>
+                                <rect key="frame" x="20" y="307.66666666666669" width="353" height="21.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -160,7 +160,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="muk-wd-ZDd" userLabel="answersTableView">
-                                <rect key="frame" x="20" y="361.66666666666674" width="353" height="338.33333333333326"/>
+                                <rect key="frame" x="20" y="345.33333333333326" width="353" height="354.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AnswerCell" id="u6Q-6p-O6Y" customClass="AnswerCell" customModule="PersonalityQuiz">
@@ -230,9 +230,9 @@
                             <constraint firstItem="muk-wd-ZDd" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="1QU-Ed-tZc"/>
                             <constraint firstItem="fvk-3w-GC0" firstAttribute="top" secondItem="qtR-UF-alu" secondAttribute="bottom" constant="12" id="21G-FW-wEm"/>
                             <constraint firstAttribute="trailing" secondItem="yuI-1G-VyH" secondAttribute="trailing" constant="20" id="2Xj-Jb-dbz"/>
-                            <constraint firstItem="muk-wd-ZDd" firstAttribute="top" secondItem="6Aa-Qo-8oH" secondAttribute="bottom" constant="32.000000000000057" id="3C5-Zz-v0b"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="muk-wd-ZDd" secondAttribute="trailing" constant="20" id="3fd-sE-OTM"/>
                             <constraint firstItem="qtR-UF-alu" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="9Kn-TN-1iZ"/>
+                            <constraint firstItem="muk-wd-ZDd" firstAttribute="top" secondItem="6Aa-Qo-8oH" secondAttribute="bottom" constant="16" id="9fe-yF-OR5"/>
                             <constraint firstItem="w5k-O5-0df" firstAttribute="top" secondItem="muk-wd-ZDd" secondAttribute="bottom" constant="24" id="A0k-DJ-Vrc"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="GaE-tX-P3D" secondAttribute="trailing" constant="20" id="B3p-DN-ujS"/>
                             <constraint firstItem="qtR-UF-alu" firstAttribute="top" secondItem="IPD-7u-i5w" secondAttribute="bottom" constant="32" id="DUh-3b-5Yj"/>
@@ -241,7 +241,6 @@
                             <constraint firstItem="yuI-1G-VyH" firstAttribute="top" secondItem="qtR-UF-alu" secondAttribute="bottom" constant="12" id="S8M-I6-AES"/>
                             <constraint firstItem="IPD-7u-i5w" firstAttribute="top" secondItem="GaE-tX-P3D" secondAttribute="bottom" constant="32" id="TCg-bC-x1p"/>
                             <constraint firstItem="fvk-3w-GC0" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="TWd-k6-ZoQ"/>
-                            <constraint firstItem="6Aa-Qo-8oH" firstAttribute="centerY" secondItem="IPD-7u-i5w" secondAttribute="centerY" constant="32" id="VX8-t9-ru0"/>
                             <constraint firstItem="GaE-tX-P3D" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="Zwb-bi-f7Y"/>
                             <constraint firstItem="dh6-5d-agH" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="cwY-fV-FYO"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="qtR-UF-alu" secondAttribute="trailing" constant="20" id="dkh-hA-4Rj"/>
@@ -250,6 +249,7 @@
                             <constraint firstItem="w5k-O5-0df" firstAttribute="bottom" secondItem="B8k-UW-o69" secondAttribute="bottom" constant="-20" id="pKD-qS-qdf"/>
                             <constraint firstItem="6Aa-Qo-8oH" firstAttribute="leading" secondItem="B8k-UW-o69" secondAttribute="leading" constant="20" id="qs9-lT-aYm"/>
                             <constraint firstItem="GaE-tX-P3D" firstAttribute="top" secondItem="dh6-5d-agH" secondAttribute="bottom" constant="16" id="rAR-JV-e2q"/>
+                            <constraint firstItem="6Aa-Qo-8oH" firstAttribute="top" secondItem="IPD-7u-i5w" secondAttribute="bottom" constant="4" id="uXV-If-dme"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="Px4-ka-3Bu" secondAttribute="trailing" constant="18" id="wct-Pb-lUV"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="6Aa-Qo-8oH" secondAttribute="trailing" constant="20" id="yBW-fv-8Jq"/>
                             <constraint firstItem="B8k-UW-o69" firstAttribute="trailing" secondItem="IPD-7u-i5w" secondAttribute="trailing" constant="20" id="yFU-PI-t1b"/>
@@ -544,7 +544,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WgK-SZ-VcK"/>
+        <segue reference="jlc-ml-Pyn"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
